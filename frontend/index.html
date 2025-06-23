@@ -1,0 +1,4287 @@
+<!-- Enhanced Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <button class="modal-close" onclick="closeModal('cartModal')">&times;</button>
+            <h2 style="color: var(--earth-green); margin-bottom: 1.5rem;">
+                <i class="fas fa-shopping-cart"></i> Your Shopping Cart
+            </h2>
+            <div id="cartItems" style="max-height: 400px; overflow-y: auto;">
+                <!-- Cart items will be populated here -->
+            </div>
+            
+            <div style="border-top: 2px solid #eee; padding-top: 1rem; margin-top: 1rem;">
+                <div id="cartSummary">
+                    <!-- Cart summary will be populated here -->
+                </div>
+                
+                <div class="payment-methods" style="margin: 1rem 0;">
+                    <div class="payment-method selected" data-method="razorpay">
+                        <i class="fas fa-credit-card"></i>
+                        <div>Card/UPI/NetBanking</div>
+                    </div>
+                    <div class="payment-method" data-method="cod">
+                        <i class="fas fa-money-bill"></i>
+                        <div>Cash on Delivery</div>
+                    </div>
+                </div>
+                
+                <button id="checkoutBtn" class="btn btn-primary" style="width: 100%;" onclick="proceedToCheckout()">
+                    <i class="fas fa-lock"></i> Secure Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Harvest Plan Modal -->
+    <div id="harvestPlanModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="modal-close" onclick="closeModal('harvestPlanModal')">&times;</button>
+            <h2 style="color: var(--earth-green); margin-bottom: 1.5rem;">
+                <i class="fas fa-calendar-plus"></i> Create Harvest Plan
+            </h2>
+            <form id="harvestPlanForm">
+                <div class="form-group">
+                    <label class="form-label">Spice Type *</label>
+                    <select class="form-input" name="spice" required>
+                        <option value="">Select Spice</option>
+                        <option value="black-pepper">Black Pepper</option>
+                        <option value="cardamom">Cardamom</option>
+                        <option value="turmeric">Turmeric</option>
+                        <option value="coriander">Coriander</option>
+                        <option value="red-chili">Red Chili</option>
+                        <option value="cloves">Cloves</option>
+                        <option value="cinnamon">Cinnamon</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Crop Year *</label>
+                    <select class="form-input" name="cropYear" required>
+                        <option value="2024-25">2024-25</option>
+                        <option value="2025-26">2025-26</option>
+                        <option value="2026-27">2026-27</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Farm Area (Acres) *</label>
+                    <input type="number" class="form-input" name="farmArea" placeholder="Enter area in acres" step="0.1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Planting Date</label>
+                    <input type="date" class="form-input" name="plantingDate">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Expected Harvest Date *</label>
+                    <input type="date" class="form-input" name="expectedHarvestDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Estimated Yield (Kg) *</label>
+                    <input type="number" class="form-input" name="estimatedYield" placeholder="Expected yield in kg" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Location Details</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <input type="text" class="form-input" name="district" placeholder="District">
+                        <input type="text" class="form-input" name="village" placeholder="Village">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Crop Stages Planning</label>
+                    <div id="cropStages">
+                        <div class="crop-stage">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <select class="form-input" name="stageType">
+                                    <option value="planting">Planting</option>
+                                    <option value="fertilizing">Fertilizing</option>
+                                    <option value="weeding">Weeding</option>
+                                    <option value="pruning">Pruning</option>
+                                    <option value="harvesting">Harvesting</option>
+                                </select>
+                                <input type="date" class="form-input" name="stageDate">
+                                <input type="text" class="form-input" name="stageNotes" placeholder="Notes">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="addCropStage()">
+                        <i class="fas fa-plus"></i> Add Stage
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Additional Notes</label>
+                    <textarea class="form-input" name="notes" rows="3" placeholder="Any additional information about this harvest plan..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                    <i class="fas fa-save"></i> Save Harvest Plan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Weather Alert Modal -->
+    <div id="weatherAlertModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('weatherAlertModal')">&times;</button>
+            <h2 style="color: var(--earth-green); margin-bottom: 1.5rem;">
+                <i class="fas fa-cloud-rain"></i> Weather Alert Details
+            </h2>
+            <div id="weatherAlertContent">
+                <!-- Weather alert details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- News Detail Modal -->
+    <div id="newsDetailModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <button class="modal-close" onclick="closeModal('newsDetailModal')">&times;</button>
+            <div id="newsDetailContent">
+                <!-- News detail content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global Configuration
+        const CONFIG = {
+            API_BASE_URL: 'http://localhost:5000/api',
+            RAZORPAY_KEY_ID: 'rzp_test_your_key_id',
+            SOCKET_URL: 'http://localhost:5000'
+        };
+
+        // Global State Management
+        let currentUser = null;
+        let cart = JSON.parse(localStorage.getItem('farmers10_cart') || '[]');
+        let socket = null;
+        let deferredPrompt = null;
+        let currentDate = new Date();
+        let harvestCalendarData = [];
+        let newsData = [];
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            setupPWA();
+            
+            // Check if user is logged in
+            const token = localStorage.getItem('farmers10_token');
+            if (token) {
+                validateAndSetUser(token);
+            } else {
+                updateAuthControls(null);
+            }
+            
+            // Load initial data
+            loadProducts();
+            loadNewsBoard();
+            loadMarketPrices();
+            updateCartBadge();
+            
+            // Auto-refresh news and prices
+            setInterval(loadNewsBoard, 300000); // Every 5 minutes
+            setInterval(loadMarketPrices, 60000); // Every minute
+        });
+
+        // News Board Functions
+        async function loadNewsBoard() {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/news?limit=5`);
+                const data = await response.json();
+                newsData = data.news || getDemoNews();
+                renderNewsBoard(newsData);
+            } catch (error) {
+                console.error('Failed to load news:', error);
+                renderNewsBoard(getDemoNews());
+            }
+        }
+
+        function getDemoNews() {
+            return [
+                {
+                    _id: '1',
+                    title: 'Black Pepper Prices Surge 15% Following Export Demand',
+                    summary: 'Kerala black pepper prices have increased significantly due to strong international demand and reduced supply from major producing regions.',
+                    category: 'market_prices',
+                    spiceTypes: ['Black Pepper'],
+                    publishedAt: new Date().toISOString(),
+                    source: 'Spice Trade Journal',
+                    impact: 'high',
+                    sentiment: 'positive'
+                },
+                {
+                    _id: '2',
+                    title: 'Monsoon Forecast Positive for Cardamom Cultivation',
+                    summary: 'Weather department predicts favorable monsoon conditions for cardamom growing regions in Western Ghats, expected to boost yield.',
+                    category: 'weather',
+                    spiceTypes: ['Cardamom'],
+                    publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                    source: 'Agricultural Weather Service',
+                    impact: 'medium',
+                    sentiment: 'positive'
+                },
+                {
+                    _id: '3',
+                    title: 'Government Announces New Export Incentives for Spice Farmers',
+                    summary: 'Central government launches scheme to provide financial incentives for organic spice farmers to boost export competitiveness.',
+                    category: 'government_policy',
+                    spiceTypes: ['Turmeric', 'Coriander'],
+                    publishedAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+                    source: 'Ministry of Agriculture',
+                    impact: 'high',
+                    sentiment: 'positive'
+                },
+                {
+                    _id: '4',
+                    title: 'Turmeric Futures Touch New Highs on Supply Concerns',
+                    summary: 'Turmeric futures on commodity exchanges reached record levels amid concerns over reduced acreage and weather uncertainties.',
+                    category: 'market_prices',
+                    spiceTypes: ['Turmeric'],
+                    publishedAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+                    source: 'Commodity Market News',
+                    impact: 'medium',
+                    sentiment: 'neutral'
+                },
+                {
+                    _id: '5',
+                    title: 'Kerala Spice Board Launches Digital Marketplace Initiative',
+                    summary: 'Spice Board India introduces new digital platform to connect farmers directly with international buyers, eliminating intermediaries.',
+                    category: 'export_news',
+                    spiceTypes: ['Black Pepper', 'Cardamom', 'Turmeric'],
+                    publishedAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
+                    source: 'Spice Board India',
+                    impact: 'high',
+                    sentiment: 'positive'
+                }
+            ];
+        }
+
+        function renderNewsBoard(news) {
+            const newsBoard = document.getElementById('newsBoard');
+            if (!newsBoard) return;
+            
+            newsBoard.innerHTML = news.map(item => `
+                <div class="news-item" onclick="openNewsDetail('${item._id}')">
+                    <div class="news-image">
+                        ${getNewsIcon(item.category)}
+                    </div>
+                    <div class="news-content">
+                        <div class="news-title">${item.title}</div>
+                        <div class="news-summary">${item.summary}</div>
+                        <div class="news-meta">
+                            <div>
+                                <span class="news-category">${formatCategory(item.category)}</span>
+                                <span class="news-impact ${item.impact}">${item.impact.toUpperCase()}</span>
+                            </div>
+                            <div>
+                                <small>${formatTimeAgo(item.publishedAt)} • ${item.source}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getNewsIcon(category) {
+            const icons = {
+                market_prices: '📈',
+                weather: '🌤️',
+                government_policy: '🏛️',
+                export_news: '🚢',
+                crop_updates: '🌱'
+            };
+            return icons[category] || '📰';
+        }
+
+        function formatCategory(category) {
+            return category.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        function formatTimeAgo(dateString) {
+            const now = new Date();
+            const date = new Date(dateString);
+            const diffMs = now - date;
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffHours / 24);
+            
+            if (diffDays > 0) return `${diffDays}d ago`;
+            if (diffHours > 0) return `${diffHours}h ago`;
+            return 'Just now';
+        }
+
+        function filterNews(category) {
+            const filteredNews = category === 'all' ? newsData : newsData.filter(item => item.category === category);
+            renderNewsBoard(filteredNews);
+            
+            // Update active filter button
+            document.querySelectorAll('.chart-filters .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function openNewsDetail(newsId) {
+            const newsItem = newsData.find(item => item._id === newsId);
+            if (!newsItem) return;
+            
+            const content = document.getElementById('newsDetailContent');
+            content.innerHTML = `
+                <h2>${newsItem.title}</h2>
+                <div style="margin: 1rem 0; color: #666; display: flex; justify-content: space-between;">
+                    <span>${newsItem.source} • ${formatTimeAgo(newsItem.publishedAt)}</span>
+                    <span class="news-impact ${newsItem.impact}">${newsItem.impact.toUpperCase()} IMPACT</span>
+                </div>
+                <div style="margin: 1rem 0;">
+                    ${newsItem.spiceTypes.map(spice => `<span class="news-category">${spice}</span>`).join(' ')}
+                </div>
+                <p style="line-height: 1.6; margin: 1.5rem 0;">${newsItem.summary}</p>
+                ${newsItem.content ? `<div style="line-height: 1.6;">${newsItem.content}</div>` : ''}
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button class="btn btn-primary" onclick="closeModal('newsDetailModal')">Close</button>
+                </div>
+            `;
+            
+            openModal('newsDetailModal');
+        }
+
+        // Market Prices Functions
+        async function loadMarketPrices() {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/market-prices/latest`);
+                const prices = await response.json();
+                renderPriceTicker(prices || getDemoMarketPrices());
+            } catch (error) {
+                console.error('Failed to load market prices:', error);
+                renderPriceTicker(getDemoMarketPrices());
+            }
+        }
+
+        function getDemoMarketPrices() {
+            return [
+                { spiceInfo: [{ name: 'Black Pepper' }], latestPrice: 1200, priceChange: 2.5, _id: { market: 'Kochi' } },
+                { spiceInfo: [{ name: 'Cardamom' }], latestPrice: 8000, priceChange: -1.2, _id: { market: 'Idukki' } },
+                { spiceInfo: [{ name: 'Turmeric' }], latestPrice: 800, priceChange: 0.8, _id: { market: 'Mumbai' } },
+                { spiceInfo: [{ name: 'Red Chili' }], latestPrice: 600, priceChange: 1.5, _id: { market: 'Delhi' } },
+                { spiceInfo: [{ name: 'Coriander' }], latestPrice: 450, priceChange: -0.5, _id: { market: 'Chennai' } }
+            ];
+        }
+
+        function renderPriceTicker(prices) {
+            const ticker = document.getElementById('priceTicker');
+            if (!ticker) return;
+            
+            ticker.innerHTML = prices.map(price => `
+                <div class="ticker-item">
+                    <strong>${price.spiceInfo[0]?.name || 'Unknown'}</strong>
+                    <span>₹${price.latestPrice}/kg</span>
+                    <span class="price-change ${price.priceChange >= 0 ? 'positive' : 'negative'}">
+                        ${price.priceChange >= 0 ? '+' : ''}${price.priceChange}%
+                    </span>
+                    <small>(${price._id.market})</small>
+                </div>
+            `).join('');
+        }
+
+        // Harvest Calendar Functions
+        async function loadHarvestCalendar() {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/harvest-calendar`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('farmers10_token')}`
+                    }
+                });
+                const data = await response.json();
+                harvestCalendarData = data || getDemoHarvestData();
+                renderHarvestCalendar();
+                loadUpcomingActivities();
+                loadWeatherAlerts();
+            } catch (error) {
+                console.error('Failed to load harvest calendar:', error);
+                harvestCalendarData = getDemoHarvestData();
+                renderHarvestCalendar();
+                loadUpcomingActivities();
+                loadWeatherAlerts();
+            }
+        }
+
+        function getDemoHarvestData() {
+            const today = new Date();
+            return [
+                {
+                    _id: '1',
+                    spice: { name: 'Black Pepper', _id: '1' },
+                    expectedHarvestDate: new Date(2025, 0, 15), // Jan 15, 2025
+                    plantingDate: new Date(2024, 5, 1), // Jun 1, 2024
+                    estimatedYield: 200,
+                    farmArea: 2.5,
+                    status: 'growing',
+                    cropStages: [
+                        { stage: 'Pruning', plannedDate: new Date(2024, 11, 30), completed: false },
+                        { stage: 'Fertilizing', plannedDate: new Date(2025, 0, 5), completed: false },
+                        { stage: 'Harvesting', plannedDate: new Date(2025, 0, 15), completed: false }
+                    ]
+                },
+                {
+                    _id: '2',
+                    spice: { name: 'Cardamom', _id: '2' },
+                    expectedHarvestDate: new Date(2025, 1, 5), // Feb 5, 2025
+                    plantingDate: new Date(2024, 3, 15), // Apr 15, 2024
+                    estimatedYield: 50,
+                    farmArea: 1.0,
+                    status: 'growing',
+                    cropStages: [
+                        { stage: 'Weeding', plannedDate: new Date(2025, 0, 2), completed: false },
+                        { stage: 'Harvesting', plannedDate: new Date(2025, 1, 5), completed: false }
+                    ]
+                }
+            ];
+        }
+
+        function renderHarvestCalendar() {
+            const calendarView = document.getElementById('harvestCalendarView');
+            if (!calendarView) return;
+            
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            // Update month/year display
+            const monthYearElement = document.getElementById('currentMonthYear');
+            if (monthYearElement) {
+                monthYearElement.textContent = new Date(year, month).toLocaleDateString('en-US', { 
+                    month: 'long', 
+                    year: 'numeric' 
+                });
+            }
+            
+            // Generate calendar grid
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            const calendarGrid = calendarView.querySelector('.calendar-grid');
+            if (!calendarGrid) return;
+            
+            // Clear existing days (keep headers)
+            const dayHeaders = calendarGrid.querySelectorAll('.calendar-day-header');
+            calendarGrid.innerHTML = '';
+            dayHeaders.forEach(header => calendarGrid.appendChild(header));
+            
+            // Generate 42 days (6 weeks)
+            for (let i = 0; i < 42; i++) {
+                const date = new Date(startDate);
+                date.setDate(date.getDate() + i);
+                
+                const dayElement = createCalendarDay(date, month);
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        function createCalendarDay(date, currentMonth) {
+            const dayDiv = document.createElement('div');
+            dayDiv.className = 'calendar-day';
+            
+            if (date.getMonth() !== currentMonth) {
+                dayDiv.classList.add('other-month');
+            }
+            
+            if (date.toDateString() === new Date().toDateString()) {
+                dayDiv.classList.add('today');
+            }
+            
+            // Day number
+            const dayNumber = document.createElement('div');
+            dayNumber.className = 'calendar-day-number';
+            dayNumber.textContent = date.getDate();
+            dayDiv.appendChild(dayNumber);
+            
+            // Add events for this day
+            const dayEvents = getEventsForDate(date);
+            dayEvents.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.className = `calendar-event ${event.type}`;
+                eventDiv.textContent = event.title;
+                eventDiv.onclick = () => showEventDetails(event);
+                dayDiv.appendChild(eventDiv);
+            });
+            
+            return dayDiv;
+        }
+
+        function getEventsForDate(date) {
+            const events = [];
+            const dateStr = date.toDateString();
+            
+            harvestCalendarData.forEach(harvest => {
+                // Check harvest date
+                if (harvest.expectedHarvestDate && new Date(harvest.expectedHarvestDate).toDateString() === dateStr) {
+                    events.push({
+                        type: 'harvesting',
+                        title: `Harvest ${harvest.spice.name}`,
+                        harvest: harvest
+                    });
+                }
+                
+                // Check planting date
+                if (harvest.plantingDate && new Date(harvest.plantingDate).toDateString() === dateStr) {
+                    events.push({
+                        type: 'planting',
+                        title: `Plant ${harvest.spice.name}`,
+                        harvest: harvest
+                    });
+                }
+                
+                // Check crop stages
+                harvest.cropStages?.forEach(stage => {
+                    if (stage.plannedDate && new Date(stage.plannedDate).toDateString() === dateStr) {
+                        events.push({
+                            type: 'maintenance',
+                            title: stage.stage,
+                            harvest: harvest,
+                            stage: stage
+                        });
+                    }
+                });
+            });
+            
+            return events;
+        }
+
+        function changeMonth(direction) {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            renderHarvestCalendar();
+        }
+
+        function loadUpcomingActivities() {
+            const activitiesList = document.getElementById('upcomingActivitiesList');
+            if (!activitiesList) return;
+            
+            const today = new Date();
+            const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+            
+            const upcomingActivities = [];
+            
+            harvestCalendarData.forEach(harvest => {
+                harvest.cropStages?.forEach(stage => {
+                    const stageDate = new Date(stage.plannedDate);
+                    if (stageDate >= today && stageDate <= nextWeek && !stage.completed) {
+                        upcomingActivities.push({
+                            date: stageDate,
+                            title: stage.stage,
+                            spice: harvest.spice.name,
+                            type: getActivityType(stage.stage)
+                        });
+                    }
+                });
+            });
+            
+            upcomingActivities.sort((a, b) => a.date - b.date);
+            
+            activitiesList.innerHTML = upcomingActivities.length > 0 ? 
+                upcomingActivities.map(activity => `
+                    <div class="activity-item">
+                        <div class="activity-icon ${activity.type}">
+                            <i class="fas fa-${getActivityIcon(activity.type)}"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-title">${activity.title} - ${activity.spice}</div>
+                            <div class="activity-description">Scheduled activity for your ${activity.spice} crop</div>
+                        </div>
+                        <div class="activity-date">
+                            ${activity.date.toLocaleDateString()}
+                        </div>
+                    </div>
+                `).join('') : 
+                '<div style="text-align: center; color: #666; padding: 2rem;">No upcoming activities in the next 7 days</div>';
+        }
+
+        function getActivityType(stageName) {
+            const stage = stageName.toLowerCase();
+            if (stage.includes('plant')) return 'planting';
+            if (stage.includes('harvest')) return 'harvesting';
+            return 'maintenance';
+        }
+
+        function getActivityIcon(type) {
+            const icons = {
+                planting: 'seedling',
+                harvesting: 'cut',
+                maintenance: 'tools'
+            };
+            return icons[type] || 'tasks';
+        }
+
+        function loadWeatherAlerts() {
+            const weatherAlerts = document.getElementById('weatherAlerts');
+            const weatherForecast = document.getElementById('weatherForecast');
+            
+            if (weatherAlerts) {
+                // Demo weather alerts
+                weatherAlerts.innerHTML = `
+                    <div class="weather-alert warning">
+                        <strong>⚠️ Heavy Rain Alert</strong>
+                        <p>Heavy rainfall expected in Idukki region for next 48 hours. Protect harvested crops.</p>
+                        <small>Issued: 2 hours ago</small>
+                    </div>
+                `;
+            }
+            
+            if (weatherForecast) {
+                // Demo weather forecast
+                const forecast = [
+                    { date: 'Today', temp: '28°C', conditions: 'Partly Cloudy' },
+                    { date: 'Tomorrow', temp: '26°C', conditions: 'Light Rain' },
+                    { date: 'Day 3', temp: '24°C', conditions: 'Heavy Rain' },
+                    { date: 'Day 4', temp: '27°C', conditions: 'Sunny' },
+                    { date: 'Day 5', temp: '29°C', conditions: 'Partly Cloudy' }
+                ];
+                
+                weatherForecast.innerHTML = forecast.map(day => `
+                    <div class="forecast-day">
+                        <div class="forecast-date">${day.date}</div>
+                        <div class="forecast-temp">${day.temp}</div>
+                        <div class="forecast-conditions">${day.conditions}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function addCropStage() {
+            const cropStages = document.getElementById('cropStages');
+            const newStage = document.createElement('div');
+            newStage.className = 'crop-stage';
+            newStage.innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr 2fr auto; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <select class="form-input" name="stageType">
+                        <option value="planting">Planting</option>
+                        <option value="fertilizing">Fertilizing</option>
+                        <option value="weeding">Weeding</option>
+                        <option value="pruning">Pruning</option>
+                        <option value="harvesting">Harvesting</option>
+                    </select>
+                    <input type="date" class="form-input" name="stageDate">
+                    <input type="text" class="form-input" name="stageNotes" placeholder="Notes">
+                    <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            cropStages.appendChild(newStage);
+        }
+
+        function refreshHarvestCalendar() {
+            loadHarvestCalendar();
+            showNotification('Harvest calendar refreshed!', 'info');
+        }
+
+        function filterHarvestCalendar() {
+            const month = document.getElementById('harvestMonthFilter').value;
+            // Implement month filtering logic here
+            showNotification(`Filtering calendar for month: ${month || 'All'}`, 'info');
+        }(--earth-green); margin-bottom: 1.5rem;">
+                <i class="fas fa-leaf"></i> Get Premium Spice Quote
+            </h2>
+            <form id="leadForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" class="form-input" name="name" placeholder="Enter your name" required>
+                    <div class="form-error"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number *</label>
+                    <input type="tel" class="form-input" name="phone" placeholder="+91 98765 43210" required>
+                    <div class="form-error"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" name="email" placeholder="your@email.com">
+                    <div class="form-error"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Interested Spices *</label>
+                    <select class="form-input" name="interestedSpices" multiple required>
+                        <option value="Black Pepper">Black Pepper</option>
+                        <option value="Cardamom">Cardamom</option>
+                        <option value="Turmeric">Turmeric</option>
+                        <option value="Coriander">Coriander</option>
+                        <option value="Red Chili">Red Chili</option>
+                        <option value="Cloves">Cloves</option>
+                        <option value="Cinnamon">Cinnamon</option>
+                    </select>
+                    <div class="form-error"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Monthly Quantity Needed</label>
+                    <select class="form-input" name="monthlyQuantity">
+                        <option value="1-5 Kg">1-5 Kg</option>
+                        <option value="6-15 Kg">6-15 Kg</option>
+                        <option value="16-50 Kg">16-50 Kg</option>
+                        <option value="50+ Kg">50+ Kg (Bulk Orders)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                    <i class="fas fa-paper-plane"></i> Get Instant Quote
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Enhanced Cart Modal -->
+    <div id="        async function login(email, password, role) {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('farmers10_token', data.token);
+                    currentUser = data.user;
+                    updateAuthControls(currentUser);
+                    setupSocketConnection();
+                    showDashboard(currentUser.role);
+                    closeModal('loginModal');
+                    showNotification('Login successful!', 'success');
+                } else {
+                    showNotification(data.error || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showNotification('Network error. Please try again.', 'error');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('farmers10_token');
+            localStorage.removeItem('farmers10_cart');
+            if (socket) {
+                socket.disconnect();
+            }
+            currentUser = null;
+            cart = [];
+            updateAuthControls(null);
+            updateCartBadge();
+            showDashboard('customer');
+            showNotification('Logged out successfully', 'info');
+        }
+
+        // Product Management
+        async function loadProducts() {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/spices`);
+                const products = await response.json();
+                renderProducts(products);
+            } catch (error) {
+                console.error('Failed to load products:', error);
+                // Show demo products
+                renderProducts(getDemoProducts());
+            }
+        }
+
+        function getDemoProducts() {
+            return [
+                {
+                    _id: '1',
+                    name: 'Idukki Black Pepper',
+                    category: 'pepper',
+                    basePrice: 1200,
+                    origin: 'Idukki, Kerala',
+                    images: ['🌶️'],
+                    qualityGrade: 'Premium',
+                    inStock: true,
+                    inventory: [{ quantity: 450, farmer: { name: 'Ravi Kumar' } }]
+                },
+                {
+                    _id: '2',
+                    name: 'Wayanad Cardamom',
+                    category: 'cardamom',
+                    basePrice: 8000,
+                    origin: 'Wayanad, Kerala',
+                    images: ['🌿'],
+                    qualityGrade: 'Premium',
+                    inStock: true,
+                    inventory: [{ quantity: 125, farmer: { name: 'Meera Nair' } }]
+                },
+                {
+                    _id: '3',
+                    name: 'Organic Turmeric',
+                    category: 'turmeric',
+                    basePrice: 800,
+                    origin: 'Wayanad, Kerala',
+                    images: ['🧄'],
+                    qualityGrade: 'Grade A',
+                    inStock: true,
+                    inventory: [{ quantity: 675, farmer: { name: 'Suresh Babu' } }]
+                },
+                {
+                    _id: '4',
+                    name: 'Kerala Red Chili',
+                    category: 'chili',
+                    basePrice: 600,
+                    origin: 'Kannur, Kerala',
+                    images: ['🌶️'],
+                    qualityGrade: 'Grade A',
+                    inStock: false,
+                    inventory: []
+                }
+            ];
+        }
+
+        function renderProducts(products) {
+            const productGrid = document.getElementById('productGrid');
+            productGrid.innerHTML = products.map(product => `
+                <div class="product-card ${!product.inStock ? 'out-of-stock' : ''}" data-category="${product.category}">
+                    <div class="product-image">
+                        ${product.images[0]}
+                        ${product.qualityGrade === 'Premium' ? '<div class="product-badge">Premium</div>' : ''}
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-origin">📍 ${product.origin}</div>
+                        <div class="product-price">₹${product.basePrice}/kg</div>
+                        <div class="quantity-selector">
+                            <button class="quantity-btn" onclick="updateQuantity('${product._id}', -100)">-</button>
+                            <span id="qty-${product._id}">250g</span>
+                            <button class="quantity-btn" onclick="updateQuantity('${product._id}', 100)">+</button>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;" 
+                                onclick="addToCart('${product._id}')" 
+                                ${!product.inStock ? 'disabled' : ''}>
+                            <i class="fas fa-cart-plus"></i> 
+                            ${product.inStock ? 'Add to Cart' : 'Out of Stock'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product-card');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            // Update active filter button
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            products.forEach(product => {
+                if (category === 'all' || product.dataset.category === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        // Cart Management
+        function updateQuantity(productId, change) {
+            const qtyElement = document.getElementById(`qty-${productId}`);
+            const currentQty = parseInt(qtyElement.textContent);
+            const newQty = Math.max(100, currentQty + change);
+            qtyElement.textContent = newQty + 'g';
+        }
+
+        function addToCart(productId) {
+            const qtyElement = document.getElementById(`qty-${productId}`);
+            const quantity = parseInt(qtyElement.textContent);
+            
+            const existingItem = cart.find(item => item.productId === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    productId,
+                    quantity,
+                    addedAt: new Date().toISOString()
+                });
+            }
+            
+            localStorage.setItem('farmers10_cart', JSON.stringify(cart));
+            updateCartBadge();
+            showNotification('Item added to cart!', 'success');
+        }
+
+        function updateCartBadge() {
+            const badges = document.querySelectorAll('.cart-badge');
+            badges.forEach(badge => {
+                badge.dataset.count = cart.length;
+            });
+        }
+
+        function renderCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartSummary = document.getElementById('cartSummary');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div style="text-align: center; padding: 2rem; color: #666;">Your cart is empty</div>';
+                cartSummary.innerHTML = '';
+                return;
+            }
+            
+            // Demo product data for cart rendering
+            const products = getDemoProducts();
+            let subtotal = 0;
+            
+            cartItems.innerHTML = cart.map(item => {
+                const product = products.find(p => p._id === item.productId);
+                const itemTotal = (product.basePrice * item.quantity) / 1000; // Convert grams to kg
+                subtotal += itemTotal;
+                
+                return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border: 1px solid #eee; border-radius: 8px; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="font-size: 2rem;">${product.images[0]}</div>
+                            <div>
+                                <h4>${product.name}</h4>
+                                <p>${item.quantity}g × ₹${product.basePrice}/kg</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="font-weight: bold;">₹${Math.round(itemTotal)}</span>
+                            <button onclick="removeFromCart('${item.productId}')" 
+                                    style="background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1.2rem;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            const deliveryCharges = subtotal > 1000 ? 0 : 50;
+            const total = subtotal + deliveryCharges;
+            
+            cartSummary.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Subtotal:</span>
+                    <span>₹${Math.round(subtotal)}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Delivery:</span>
+                    <span>${deliveryCharges === 0 ? 'FREE' : '₹' + deliveryCharges}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; margin-bottom: 1rem; padding-top: 0.5rem; border-top: 1px solid #eee;">
+                    <span>Total:</span>
+                    <span>₹${Math.round(total)}</span>
+                </div>
+            `;
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.productId !== productId);
+            localStorage.setItem('farmers10_cart', JSON.stringify(cart));
+            updateCartBadge();
+            renderCart();
+            showNotification('Item removed from cart', 'info');
+        }
+
+        // Payment Integration
+        async function proceedToCheckout() {
+            if (!currentUser) {
+                showNotification('Please login to continue', 'warning');
+                closeModal('cartModal');
+                openModal('loginModal');
+                return;
+            }
+            
+            if (cart.length === 0) {
+                showNotification('Your cart is empty', 'warning');
+                return;
+            }
+            
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            checkoutBtn.classList.add('loading');
+            
+            try {
+                // Calculate total
+                const products = getDemoProducts();
+                let subtotal = 0;
+                
+                cart.forEach(item => {
+                    const product = products.find(p => p._id === item.productId);
+                    subtotal += (product.basePrice * item.quantity) / 1000;
+                });
+                
+                const deliveryCharges = subtotal > 1000 ? 0 : 50;
+                const total = subtotal + deliveryCharges;
+                
+                // Create order
+                const orderResponse = await fetch(`${CONFIG.API_BASE_URL}/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('farmers10_token')}`
+                    },
+                    body: JSON.stringify({
+                        items: cart.map(item => ({
+                            inventoryId: item.productId,
+                            quantity: item.quantity / 1000 // Convert to kg
+                        })),
+                        deliveryAddress: {
+                            name: currentUser.name,
+                            phone: currentUser.phone,
+                            address: '123 Main Street',
+                            city: 'Kochi',
+                            state: 'Kerala',
+                            pincode: '682001'
+                        }
+                    })
+                });
+                
+                const orderData = await orderResponse.json();
+                
+                if (orderResponse.ok) {
+                    // Initiate payment
+                    const selectedPaymentMethod = document.querySelector('.payment-method.selected').dataset.method;
+                    
+                    if (selectedPaymentMethod === 'razorpay') {
+                        await initiateRazorpayPayment(orderData.order, total);
+                    } else {
+                        // COD
+                        showNotification('Order placed successfully! You will pay on delivery.', 'success');
+                        cart = [];
+                        localStorage.setItem('farmers10_cart', JSON.stringify(cart));
+                        updateCartBadge();
+                        closeModal('cartModal');
+                    }
+                } else {
+                    showNotification(orderData.error || 'Failed to create order', 'error');
+                }
+            } catch (error) {
+                showNotification('Network error. Please try again.', 'error');
+            } finally {
+                checkoutBtn.classList.remove('loading');
+            }
+        }
+
+        async function initiateRazorpayPayment(order, amount) {
+            try {
+                const paymentResponse = await fetch(`${CONFIG.API_BASE_URL}/payments/create-order`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('farmers10_token')}`
+                    },
+                    body: JSON.stringify({
+                        orderId: order.orderNumber,
+                        amount: amount
+                    })
+                });
+                
+                const paymentData = await paymentResponse.json();
+                
+                const options = {
+                    key: CONFIG.RAZORPAY_KEY_ID,
+                    amount: paymentData.amount,
+                    currency: paymentData.currency,
+                    name: 'Farmers 10',
+                    description: 'Premium Organic Spices',
+                    order_id: paymentData.orderId,
+                    handler: async function(response) {
+                        await verifyPayment(response, order.orderNumber);
+                    },
+                    prefill: {
+                        name: currentUser.name,
+                        email: currentUser.email,
+                        contact: currentUser.phone
+                    },
+                    theme: {
+                        color: '#2d5016'
+                    }
+                };
+                
+                const rzp = new Razorpay(options);
+                rzp.open();
+            } catch (error) {
+                showNotification('Payment initialization failed', 'error');
+            }
+        }
+
+        async function verifyPayment(paymentResponse, orderNumber) {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/payments/verify`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('farmers10_token')}`
+                    },
+                    body: JSON.stringify({
+                        paymentId: paymentResponse.razorpay_payment_id,
+                        orderId: paymentResponse.razorpay_order_id,
+                        signature: paymentResponse.razorpay_signature
+                    })
+                });
+                
+                if (response.ok) {
+                    showNotification('Payment successful! Your order has been confirmed.', 'success');
+                    cart = [];
+                    localStorage.setItem('farmers10_cart', JSON.stringify(cart));
+                    updateCartBadge();
+                    closeModal('cartModal');
+                    refreshOrderHistory();
+                } else {
+                    showNotification('Payment verification failed', 'error');
+                }
+            } catch (error) {
+                showNotification('Payment verification error', 'error');
+            }
+        }
+
+        // Order Tracking
+        async function trackOrder() {
+            const orderNumber = document.getElementById('trackingOrderId').value.trim();
+            
+            if (!orderNumber) {
+                showNotification('Please enter an order number', 'warning');
+                return;
+            }
+            
+            try {
+                // Demo tracking data
+                const trackingData = {
+                    orderNumber: orderNumber,
+                    status: 'shipped',
+                    timeline: [
+                        { status: 'placed', timestamp: '2024-12-26T10:00:00Z', notes: 'Order placed successfully', completed: true },
+                        { status: 'confirmed', timestamp: '2024-12-26T11:00:00Z', notes: 'Payment confirmed', completed: true },
+                        { status: 'processing', timestamp: '2024-12-26T14:00:00Z', notes: 'Order is being processed', completed: true },
+                        { status: 'shipped', timestamp: '2024-12-27T09:00:00Z', notes: 'Order shipped via Express Delivery', completed: true, active: true },
+                        { status: 'delivered', timestamp: null, notes: 'Expected delivery', completed: false }
+                    ]
+                };
+                
+                renderTrackingTimeline(trackingData);
+                document.getElementById('trackingResults').style.display = 'block';
+                
+            } catch (error) {
+                showNotification('Failed to fetch tracking information', 'error');
+            }
+        }
+
+        function renderTrackingTimeline(data) {
+            const timeline = document.querySelector('#trackingResults .tracking-timeline');
+            
+            timeline.innerHTML = data.timeline.map(step => `
+                <div class="tracking-step ${step.completed ? 'completed' : ''} ${step.active ? 'active' : ''}">
+                    <div class="tracking-icon">
+                        <i class="fas fa-${getTrackingIcon(step.status)}"></i>
+                    </div>
+                    <div>
+                        <h4 style="text-transform: capitalize; margin-bottom: 0.5rem;">${step.status}</h4>
+                        <p style="color: #666; margin-bottom: 0.25rem;">${step.notes}</p>
+                        ${step.timestamp ? `<small style="color: #999;">${new Date(step.timestamp).toLocaleString()}</small>` : '<small style="color: #999;">Pending</small>'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getTrackingIcon(status) {
+            const icons = {
+                placed: 'check',
+                confirmed: 'credit-card',
+                processing: 'cog',
+                shipped: 'truck',
+                delivered: 'home'
+            };
+            return icons[status] || 'circle';
+        }
+
+        // Notification System
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const icon = type === 'success' ? 'check-circle' : 
+                        type === 'error' ? 'exclamation-circle' : 
+                        type === 'warning' ? 'exclamation-triangle' : 'info-circle';
+            
+            notification.innerHTML = `
+                <i class="fas fa-${icon}"></i>
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()" style="background: none; border: none; margin-left: auto; cursor: pointer;">&times;</button>
+            `;
+            
+            container.appendChild(notification);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Dashboard Functions
+        function showDashboard(role) {
+            // Hide all dashboards
+            document.querySelectorAll('.dashboard').forEach(dashboard => {
+                dashboard.classList.remove('active');
+            });
+            
+            // Remove active from all role buttons
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected dashboard
+            document.getElementById(role).classList.add('active');
+            
+            // Add active to clicked button if exists
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // Load dashboard-specific data
+            loadDashboardData(role);
+        }
+
+        function loadDashboardData(role) {
+            switch (role) {
+                case 'customer':
+                    loadCustomerData();
+                    break;
+                case 'farmer':
+                    loadFarmerData();
+                    break;
+                case 'admin':
+                    loadAdminData();
+                    break;
+                case 'logistics':
+                    loadLogisticsData();
+                    break;
+            }
+        }
+
+        function loadCustomerData() {
+            // Load order history
+            refreshOrderHistory();
+            
+            // Load AI recommendations
+            loadAIRecommendations();
+        }
+
+        function loadFarmerData() {
+            refreshFarmerInventory();
+            loadEarningsChart();
+        }
+
+        function loadAdminData() {
+            refreshAdminStats();
+            loadSalesChart();
+            loadFunnelChart();
+            refreshAdminOrders();
+        }
+
+        function loadLogisticsData() {
+            refreshLogisticsStats();
+            loadRoutesData();
+        }
+
+        // Real-time Data Updates
+        function refreshLiveData() {
+            if (currentUser) {
+                switch (currentUser.role) {
+                    case 'admin':
+                        updateLiveStats();
+                        break;
+                    case 'farmer':
+                        updateFarmerStats();
+                        break;
+                    case 'logistics':
+                        updateLogisticsStats();
+                        break;
+                }
+            }
+        }
+
+        function updateLiveStats() {
+            // Simulate real-time updates for admin dashboard
+            const revenueElement = document.getElementById('todayRevenue');
+            const ordersElement = document.getElementById('todayOrders');
+            
+            if (revenueElement && ordersElement) {
+                const currentRevenue = parseInt(revenueElement.textContent.replace(/[₹,]/g, ''));
+                const currentOrders = parseInt(ordersElement.textContent);
+                
+                // Random small increases
+                const newRevenue = currentRevenue + Math.floor(Math.random() * 5000);
+                const newOrders = currentOrders + Math.floor(Math.random() * 3);
+                
+                revenueElement.textContent = '₹' + newRevenue.toLocaleString();
+                ordersElement.textContent = newOrders;
+            }
+        }
+
+        // Modal Functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            
+            // Special handling for cart modal
+            if (modalId === 'cartModal') {
+                renderCart();
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Form Handlers
+        function setupEventListeners() {
+            // Lead form submission
+            document.getElementById('leadForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const leadData = Object.fromEntries(formData.entries());
+                
+                try {
+                    const response = await fetch(`${CONFIG.API_BASE_URL}/leads`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(leadData)
+                    });
+                    
+                    if (response.ok) {
+                        showNotification('Thank you! We will contact you within 24 hours.', 'success');
+                        closeModal('leadModal');
+                        this.reset();
+                    } else {
+                        showNotification('Failed to submit. Please try again.', 'error');
+                    }
+                } catch (error) {
+                    showNotification('Network error. Please try again.', 'error');
+                }
+            });
+            
+            // Inventory form submission
+            document.getElementById('inventoryForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const inventoryData = Object.fromEntries(formData.entries());
+                
+                try {
+                    const response = await fetch(`${CONFIG.API_BASE_URL}/inventory`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('farmers10_token')}`
+                        },
+                        body: JSON.stringify(inventoryData)
+                    });
+                    
+                    if (response.ok) {
+                        showNotification('Inventory submitted for approval!', 'success');
+                        closeModal('inventoryModal');
+                        this.reset();
+                        refreshFarmerInventory();
+                    } else {
+                        showNotification('Failed to submit inventory.', 'error');
+                    }
+                } catch (error) {
+                    showNotification('Network error. Please try again.', 'error');
+                }
+            });
+            
+            // Payment method selection
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.payment-method')) {
+                    document.querySelectorAll('.payment-method').forEach(method => {
+                        method.classList.remove('selected');
+                    });
+                    e.target.closest('.payment-method').classList.add('selected');
+                }
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.classList.remove('active');
+                }
+            });
+        }
+
+        // PWA Functions
+        function setupPWA() {
+            // PWA install prompt
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                document.getElementById('installPrompt').classList.add('show');
+            });
+            
+            // PWA installed
+            window.addEventListener('appinstalled', () => {
+                document.getElementById('installPrompt').classList.remove('show');
+                showNotification('Farmers 10 app installed successfully!', 'success');
+            });
+        }
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        function dismissInstall() {
+            document.getElementById('installPrompt').classList.remove('show');
+        }
+
+        // Demo Data Functions (for when backend is not available)
+        function refreshOrderHistory() {
+            const orderHistory = document.getElementById('orderHistory');
+            if (orderHistory) {
+                orderHistory.innerHTML = `
+                    <tr>
+                        <td>#F10001</td>
+                        <td>Black Pepper 250g, Cardamom 100g</td>
+                        <td>₹1,100</td>
+                        <td><span class="status-badge shipped">Shipped</span></td>
+                        <td>Dec 26, 2024</td>
+                        <td><button class="btn btn-secondary" onclick="openModal('trackingModal')">Track</button></td>
+                    </tr>
+                    <tr>
+                        <td>#F10002</td>
+                        <td>Turmeric 500g</td>
+                        <td>₹400</td>
+                        <td><span class="status-badge delivered">Delivered</span></td>
+                        <td>Dec 25, 2024</td>
+                        <td><button class="btn btn-secondary">Rate</button></td>
+                    </tr>
+                `;
+            }
+        }
+
+        function loadAIRecommendations() {
+            const recommendations = document.getElementById('aiRecommendations');
+            if (recommendations) {
+                recommendations.innerHTML = `
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
+                        <h4>🤖 Suggested for You</h4>
+                        <p><strong>Kerala Fish Curry Blend</strong></p>
+                        <p>Based on your previous orders, we recommend:</p>
+                        <ul style="margin: 1rem 0;">
+                            <li>Black Pepper - 50g</li>
+                            <li>Coriander - 100g</li>
+                            <li>Turmeric - 25g</li>
+                            <li>Red Chili - 75g</li>
+                        </ul>
+                        <button class="btn btn-primary">Add Blend to Cart</button>
+                    </div>
+                `;
+            }
+        }
+
+        function refreshFarmerInventory() {
+            const inventoryTable = document.getElementById('farmerInventoryTable');
+            if (inventoryTable) {
+                inventoryTable.innerHTML = `
+                    <tr>
+                        <td>Black Pepper</td>
+                        <td>450</td>
+                        <td>₹1,200</td>
+                        <td>Grade A</td>
+                        <td><span class="status-badge processing">Available</span></td>
+                        <td><button class="btn btn-secondary">Edit</button></td>
+                    </tr>
+                    <tr>
+                        <td>Cardamom</td>
+                        <td>125</td>
+                        <td>₹8,000</td>
+                        <td>Premium</td>
+                        <td><span class="status-badge pending">Low Stock</span></td>
+                        <td><button class="btn btn-secondary">Edit</button></td>
+                    </tr>
+                `;
+            }
+        }
+
+        function loadEarningsChart() {
+            const ctx = document.getElementById('earningsChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [{
+                            label: 'Daily Earnings',
+                            data: [1200, 1900, 800, 1500, 2000, 1800, 2200],
+                            borderColor: '#4a7c59',
+                            backgroundColor: 'rgba(74, 124, 89, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function refreshAdminStats() {
+            // Update stats with demo data
+            console.log('Refreshing admin stats...');
+        }
+
+        function loadSalesChart() {
+            const ctx = document.getElementById('salesChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'Revenue',
+                            data: [45000, 52000, 48000, 61000, 58000, 67000],
+                            borderColor: '#4a7c59',
+                            backgroundColor: 'rgba(74, 124, 89, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '₹' + value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function loadFunnelChart() {
+            const ctx = document.getElementById('funnelChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['New Leads', 'Contacted', 'Converted'],
+                        datasets: [{
+                            data: [156, 89, 34],
+                            backgroundColor: [
+                                '#90ee90',
+                                '#ffc107', 
+                                '#4a7c59'
+                            ],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function refreshAdminOrders() {
+            const ordersTable = document.getElementById('adminOrdersTable');
+            if (ordersTable) {
+                ordersTable.innerHTML = `
+                    <tr>
+                        <td>#F10001</td>
+                        <td>Ravi Kumar</td>
+                        <td>Black Pepper 250g</td>
+                        <td>₹300</td>
+                        <td><span class="status-badge shipped">Shipped</span></td>
+                        <td>Dec 26, 2024</td>
+                        <td>
+                            <button class="btn btn-secondary" onclick="updateOrderStatus('#F10001')">Update</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#F10002</td>
+                        <td>Priya Nair</td>
+                        <td>Cardamom 100g</td>
+                        <td>₹800</td>
+                        <td><span class="status-badge processing">Processing</span></td>
+                        <td>Dec 27, 2024</td>
+                        <td>
+                            <button class="btn btn-secondary" onclick="updateOrderStatus('#F10002')">Update</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#F10003</td>
+                        <td>Suresh Babu</td>
+                        <td>Turmeric 500g</td>
+                        <td>₹400</td>
+                        <td><span class="status-badge pending">Pending</span></td>
+                        <td>Dec 27, 2024</td>
+                        <td>
+                            <button class="btn btn-secondary" onclick="updateOrderStatus('#F10003')">Update</button>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function refreshLogisticsStats() {
+            console.log('Refreshing logistics stats...');
+        }
+
+        function loadRoutesData() {
+            const routesTable = document.getElementById('routesTable');
+            if (routesTable) {
+                routesTable.innerHTML = `
+                    <tr>
+                        <td>Kochi - Trivandrum</td>
+                        <td>Arun Kumar</td>
+                        <td>KL-07-AB-1234</td>
+                        <td>15</td>
+                        <td><span class="status-badge processing">Active</span></td>
+                        <td>4:30 PM</td>
+                        <td>
+                            <button class="btn btn-secondary">Track</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Kottayam - Idukki</td>
+                        <td>Vineeth M</td>
+                        <td>KL-05-CD-5678</td>
+                        <td>8</td>
+                        <td><span class="status-badge pending">Delayed</span></td>
+                        <td>6:00 PM</td>
+                        <td>
+                            <button class="btn btn-secondary">Track</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Wayanad - Calicut</td>
+                        <td>Rajesh P</td>
+                        <td>KL-11-EF-9012</td>
+                        <td>12</td>
+                        <td><span class="status-badge shipped">On Time</span></td>
+                        <td>3:15 PM</td>
+                        <td>
+                            <button class="btn btn-secondary">Track</button>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Utility Functions
+        function updateOrderStatus(orderNumber) {
+            showNotification(`Order ${orderNumber} status updated`, 'success');
+        }
+
+        function optimizeRoutes() {
+            showNotification('Routes optimized successfully!', 'success');
+        }
+
+        function exportReport() {
+            showNotification('Report exported successfully!', 'success');
+        }
+
+        function refreshRecommendations() {
+            loadAIRecommendations();
+            showNotification('Recommendations refreshed!', 'info');
+        }
+
+        function viewAllOrders() {
+            showNotification('Redirecting to full order history...', 'info');
+        }
+
+        function syncInventory() {
+            showNotification('Inventory synchronized!', 'success');
+        }
+
+        function refreshOrders() {
+            refreshAdminOrders();
+            showNotification('Orders refreshed!', 'info');
+        }
+
+        function refreshMap() {
+            showNotification('Map data refreshed!', 'info');
+        }
+
+        function filterOrders() {
+            const filter = document.getElementById('orderStatusFilter').value;
+            showNotification(`Filtering orders by: ${filter}`, 'info');
+        }
+
+        function updateChart(type, period) {
+            // Update chart filters
+            document.querySelectorAll('.chart-filters .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            showNotification(`Chart updated: ${type} for ${period}`, 'info');
+        }
+
+        // Add login modal HTML
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginModalHTML = `
+                <div id="loginModal" class="modal">
+                    <div class="modal-content">
+                        <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+                        <h2 style="color: var(--earth-green); margin-bottom: 1.5rem;">
+                            <i class="fas fa-user"></i> Login to Farmers 10
+                        </h2>
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label class="form-label">Email or Phone</label>
+                                <input type="text" class="form-input" name="email" placeholder="Enter email or phone" required>
+                                <div class="form-error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-input" name="password" placeholder="Enter password" required>
+                                <div class="form-error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Login As</label>
+                                <select class="form-input" name="role">
+                                    <option value="customer">Customer</option>
+                                    <option value="farmer">Farmer</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="logistics">Logistics Manager</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </button>
+                            <p style="text-align: center; margin-top: 1rem;">
+                                Don't have an account? <a href="#" style="color: var(--warm-orange);" onclick="openRegisterModal()">Sign up here</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', loginModalHTML);
+            
+            // Setup login form handler
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const email = formData.get('email');
+                const password = formData.get('password');
+                
+                // Demo login - accept any credentials
+                const demoUser = {
+                    id: '1',
+                    name: email.split('@')[0] || email,
+                    email: email.includes('@') ? email : email + '@example.com',
+                    phone: email.includes('@') ? '9876543210' : email,
+                    role: formData.get('role')
+                };
+                
+                // Simulate API call delay
+                const submitBtn = this.querySelector('button[type="submit"]');
+                submitBtn.classList.add('loading');
+                
+                setTimeout(() => {
+                    localStorage.setItem('farmers10_token', 'demo_token_' + Date.now());
+                    currentUser = demoUser;
+                    updateAuthControls(currentUser);
+                    setupSocketConnection();
+                    showDashboard(currentUser.role);
+                    closeModal('loginModal');
+                    showNotification('Login successful!', 'success');
+                    submitBtn.classList.remove('loading');
+                }, 1500);
+            });
+        });
+
+        function openRegisterModal() {
+            closeModal('loginModal');
+            showNotification('Registration feature coming soon!', 'info');
+        }
+
+        // Add PWA manifest
+        const manifestData = {
+            name: "Farmers 10 - Premium Organic Spices",
+            short_name: "Farmers 10",
+            description: "Premium organic spices sourced directly from Kerala farmers",
+            start_url: "/",
+            display: "standalone",
+            background_color: "#f5f5dc",
+            theme_color: "#2d5016",
+            icons: [
+                {
+                    src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>",
+                    sizes: "192x192",
+                    type: "image/svg+xml"
+                },
+                {
+                    src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>",
+                    sizes: "512x512",
+                    type: "image/svg+xml"
+                }
+            ]
+        };
+
+        // Create manifest.json
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        
+        // Add manifest link
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestURL;
+        document.head.appendChild(manifestLink);
+
+        // Service Worker
+        const swCode = `
+            const CACHE_NAME = 'farmers10-v1';
+            const urlsToCache = [
+                '/',
+                '/manifest.json'
+            ];
+
+            self.addEventListener('install', event => {
+                event.waitUntil(
+                    caches.open(CACHE_NAME)
+                        .then(cache => cache.addAll(urlsToCache))
+                );
+            });
+
+            self.addEventListener('fetch', event => {
+                event.respondWith(
+                    caches.match(event.request)
+                        .then(response => {
+                            if (response) {
+                                return response;
+                            }
+                            return fetch(event.request);
+                        })
+                );
+            });
+        `;
+
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            const swBlob = new Blob([swCode], {type: 'application/javascript'});
+            const swURL = URL.createObjectURL(swBlob);
+            
+            navigator.serviceWorker.register(swURL)
+                .then(registration => {
+                    console.log('Service Worker registered successfully');
+                })
+                .catch(error => {
+                    console.log('Service Worker registration failed');
+                });
+        }
+
+        // Initialize real-time features
+        function initializeRealTimeFeatures() {
+            // Simulate real-time inventory updates
+            setInterval(() => {
+                if (currentUser && currentUser.role === 'farmer') {
+                    const inventoryElement = document.getElementById('farmerInventory');
+                    if (inventoryElement) {
+                        const current = parseInt(inventoryElement.textContent.replace(/,/g, ''));
+                        const change = Math.floor(Math.random() * 20) - 10; // -10 to +10
+                        const newValue = Math.max(0, current + change);
+                        inventoryElement.textContent = newValue.toLocaleString();
+                    }
+                }
+            }, 45000); // Every 45 seconds
+
+            // Simulate order notifications
+            setInterval(() => {
+                if (currentUser && currentUser.role === 'admin') {
+                    const shouldNotify = Math.random() < 0.3; // 30% chance
+                    if (shouldNotify) {
+                        const orderNumber = 'F10' + Math.floor(Math.random() * 1000);
+                        showNotification(`New order received: ${orderNumber}`, 'info');
+                        
+                        // Update today's orders count
+                        const ordersElement = document.getElementById('todayOrders');
+                        if (ordersElement) {
+                            const current = parseInt(ordersElement.textContent);
+                            ordersElement.textContent = current + 1;
+                        }
+                    }
+                }
+            }, 60000); // Every minute
+        }
+
+        // Start real-time features
+        setTimeout(initializeRealTimeFeatures, 3000);
+
+        // Add analytics tracking
+        function trackEvent(eventName, properties = {}) {
+            console.log('Analytics Event:', eventName, properties);
+            // Here you would integrate with Google Analytics, Mixpanel, etc.
+        }
+
+        // Track page views and interactions
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn')) {
+                trackEvent('button_click', {
+                    button_text: e.target.textContent.trim(),
+                    user_role: currentUser?.role || 'anonymous'
+                });
+            }
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                showNotification('Search feature coming soon!', 'info');
+            }
+            
+            // Escape to close modals
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+            }
+        });
+
+        // Add performance monitoring
+        function monitorPerformance() {
+            if ('performance' in window) {
+                window.addEventListener('load', () => {
+                    setTimeout(() => {
+                        const perfData = performance.getEntriesByType('navigation')[0];
+                        const loadTime = perfData.loadEventEnd - perfData.loadEventStart;
+                        console.log('Page load time:', loadTime + 'ms');
+                        
+                        if (loadTime > 3000) {
+                            console.warn('Slow page load detected');
+                        }
+                    }, 0);
+                });
+            }
+        }
+
+        monitorPerformance();
+
+        // Add error handling
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript error:', e.error);
+            showNotification('An error occurred. Please refresh the page.', 'error');
+        });
+
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Unhandled promise rejection:', e.reason);
+            showNotification('Network error. Please check your connection.', 'error');
+        });
+
+        console.log('🚀 Farmers 10 Platform fully loaded and ready!');
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmers 10 - Premium Organic Spices</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2d5016">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Farmers 10">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- External Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --earth-green: #2d5016;
+            --leaf-green: #4a7c59;
+            --warm-orange: #d2691e;
+            --cream: #f5f5dc;
+            --brown: #8b4513;
+            --light-green: #90ee90;
+            --gold: #daa520;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, #f0f8e8 100%);
+            color: var(--earth-green);
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Header with Auth State */
+        .header {
+            background: linear-gradient(135deg, var(--earth-green) 0%, var(--leaf-green) 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(45, 80, 22, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background: var(--warm-orange);
+            transform: translateY(-2px);
+        }
+
+        .user-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--warm-orange);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff6347;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(210, 105, 30, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--earth-green);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--earth-green);
+        }
+
+        /* Notification System */
+        .notification-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 2000;
+            max-width: 400px;
+        }
+
+        .notification {
+            background: white;
+            border-left: 4px solid var(--info);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideInRight 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification.success { border-left-color: var(--success); }
+        .notification.error { border-left-color: var(--danger); }
+        .notification.warning { border-left-color: var(--warning); }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Enhanced Dashboard */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .dashboard-title {
+            font-size: 2.5rem;
+            color: var(--earth-green);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Real-time Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.live {
+            border: 2px solid var(--success);
+        }
+
+        .stat-card.live::after {
+            content: '●';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--earth-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            color: var(--warm-orange);
+            margin-bottom: 1rem;
+        }
+
+        /* Enhanced Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card.out-of-stock {
+            opacity: 0.6;
+        }
+
+        .product-card.out-of-stock::after {
+            content: 'Out of Stock';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--danger);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .product-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--light-green), var(--leaf-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            position: relative;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--gold);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--earth-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: var(--warm-orange);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .product-origin {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Enhanced Cart */
+        .cart-badge {
+            position: relative;
+        }
+
+        .cart-badge::after {
+            content: attr(data-count);
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Payment Gateway Integration */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .payment-method {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover,
+        .payment-method.selected {
+            border-color: var(--leaf-green);
+            background: #f8f9fa;
+        }
+
+        /* Order Tracking */
+        .tracking-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .tracking-timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #ddd;
+        }
+
+        .tracking-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .tracking-step.completed::before {
+            background: var(--success);
+        }
+
+        .tracking-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            z-index: 1;
+        }
+
+        .tracking-step.completed .tracking-icon {
+            background: var(--success);
+        }
+
+        .tracking-step.active .tracking-icon {
+            background: var(--warning);
+            animation: pulse 2s infinite;
+        }
+
+        /* Enhanced Analytics Charts */
+        .chart-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chart-filters {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--leaf-green);
+            color: white;
+            border-color: var(--leaf-green);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            position: relative;
+            color: transparent !important;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--leaf-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Pulse animation for real-time elements */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* PWA Install Prompt */
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--earth-green);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1500;
+        }
+
+        .install-prompt.show {
+            display: block;
+            animation: slideInRight 0.3s ease;
+        }
+
+        /* Enhanced Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+        }
+
+        /* Form Enhancements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--earth-green);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--leaf-green);
+            box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
+        }
+
+        .form-input.error {
+            border-color: var(--danger);
+        }
+
+        .form-error {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Data Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background: var(--leaf-green);
+            color: white;
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* News Board Styles */
+        .news-board {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .news-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            background: white;
+            transition: transform 0.3s ease;
+        }
+
+        .news-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .news-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--leaf-green), var(--warm-orange));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .news-content {
+            flex: 1;
+        }
+
+        .news-title {
+            font-weight: bold;
+            color: var(--earth-green);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .news-summary {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .news-category {
+            background: var(--light-green);
+            color: var(--earth-green);
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .news-impact {
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.7rem;
+        }
+
+        .news-impact.high { background: #ffebee; color: #c62828; }
+        .news-impact.medium { background: #fff3e0; color: #f57c00; }
+        .news-impact.low { background: #e8f5e8; color: #2e7d32; }
+
+        /* Market Ticker Styles */
+        .market-ticker {
+            background: var(--earth-green);
+            color: white;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .ticker-label {
+            font-weight: bold;
+            margin-right: 1rem;
+            white-space: nowrap;
+        }
+
+        .ticker-content {
+            display: flex;
+            animation: scroll-left 60s linear infinite;
+            white-space: nowrap;
+        }
+
+        .ticker-item {
+            margin-right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .price-change.positive { color: #4caf50; }
+        .price-change.negative { color: #f44336; }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Harvest Calendar Styles */
+        .harvest-calendar {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .calendar-day-header {
+            background: var(--leaf-green);
+            color: white;
+            padding: 0.8rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .calendar-day {
+            background: white;
+            min-height: 80px;
+            padding: 0.5rem;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .calendar-day:hover {
+            background: #f8f9fa;
+        }
+
+        .calendar-day.other-month {
+            background: #f5f5f5;
+            color: #ccc;
+        }
+
+        .calendar-day.today {
+            background: #e3f2fd;
+            border: 2px solid var(--warm-orange);
+        }
+
+        .calendar-day-number {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .calendar-event {
+            background: var(--warm-orange);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            margin-bottom: 0.2rem;
+            cursor: pointer;
+        }
+
+        .calendar-event.planting { background: #4caf50; }
+        .calendar-event.harvesting { background: #ff9800; }
+        .calendar-event.maintenance { background: #2196f3; }
+        .calendar-event.weather-alert { background: #f44336; }
+
+        /* Upcoming Activities */
+        .upcoming-activities {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .activity-icon.planting { background: #4caf50; }
+        .activity-icon.harvesting { background: #ff9800; }
+        .activity-icon.maintenance { background: #2196f3; }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: bold;
+            color: var(--earth-green);
+        }
+
+        .activity-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .activity-date {
+            color: var(--warm-orange);
+            font-weight: bold;
+        }
+
+        /* Weather Integration */
+        .weather-integration {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .weather-alerts {
+            margin-bottom: 1rem;
+        }
+
+        .weather-alert {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .weather-alert.warning { background: #fff3e0; border-left-color: #ff9800; }
+        .weather-alert.info { background: #e3f2fd; border-left-color: #2196f3; }
+
+        .weather-forecast {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .forecast-day {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .forecast-date {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .forecast-temp {
+            font-size: 1.2rem;
+            color: var(--warm-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .forecast-conditions {
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- PWA Install Prompt -->
+    <div id="installPrompt" class="install-prompt">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <i class="fas fa-download"></i>
+            <div>
+                <strong>Install Farmers 10 App</strong>
+                <p style="margin: 0; font-size: 0.9rem;">Get the best experience with our mobile app</p>
+            </div>
+            <button onclick="installPWA()" class="btn btn-warning" style="margin-left: auto;">Install</button>
+            <button onclick="dismissInstall()" style="background: none; border: none; color: white; cursor: pointer;">&times;</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                Farmers 10
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Spices</a></li>
+                    <li><a href="#farmers">Our Farmers</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="user-controls">
+                <div id="authControls" style="display: flex; gap: 1rem; align-items: center;">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Welcome Section (shown when not logged in) -->
+        <div id="welcomeSection" class="role-selector">
+            <h2>🌿 Welcome to Farmers 10 Platform</h2>
+            <p>Premium organic spices sourced directly from Kerala's highland farmers</p>
+            
+            <!-- Market News Board -->
+            <div class="chart-container" style="margin: 2rem 0;">
+                <div class="chart-header">
+                    <h3><i class="fas fa-newspaper"></i> Spice Market News</h3>
+                    <div class="chart-filters">
+                        <button class="filter-btn active" onclick="filterNews('all')">All</button>
+                        <button class="filter-btn" onclick="filterNews('market_prices')">Prices</button>
+                        <button class="filter-btn" onclick="filterNews('weather')">Weather</button>
+                        <button class="filter-btn" onclick="filterNews('export_news')">Export</button>
+                    </div>
+                </div>
+                <div id="newsBoard" class="news-board">
+                    <!-- News items will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Market Prices Ticker -->
+            <div class="market-ticker">
+                <div class="ticker-label">📈 Live Market Prices:</div>
+                <div id="priceTicker" class="ticker-content">
+                    <!-- Price updates will scroll here -->
+                </div>
+            </div>
+            
+            <div class="role-buttons">
+                <button class="role-btn active" onclick="showDashboard('customer')">
+                    <i class="fas fa-shopping-cart"></i> Shop Spices
+                </button>
+                <button class="role-btn" onclick="showDashboard('farmer')">
+                    <i class="fas fa-seedling"></i> Farmer Portal
+                </button>
+                <button class="role-btn" onclick="showDashboard('admin')">
+                    <i class="fas fa-chart-line"></i> Admin Dashboard
+                </button>
+                <button class="role-btn" onclick="showDashboard('logistics')">
+                    <i class="fas fa-truck"></i> Logistics
+                </button>
+            </div>
+            <div style="margin-top: 2rem; text-align: center;">
+                <button class="btn btn-primary" onclick="openModal('leadModal')" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                    <i class="fas fa-leaf"></i> Get Instant Quote
+                </button>
+            </div>
+        </div>
+
+        <!-- Customer Dashboard -->
+        <div id="customer" class="dashboard active">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <i class="fas fa-shopping-cart"></i>
+                    Shop Premium Spices
+                </div>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <div class="cart-badge" data-count="0">
+                        <button class="btn btn-primary" onclick="openModal('cartModal')">
+                            <i class="fas fa-shopping-bag"></i> Cart
+                        </button>
+                    </div>
+                    <button class="btn btn-secondary" onclick="openModal('trackingModal')">
+                        <i class="fas fa-truck"></i> Track Order
+                    </button>
+                </div>
+            </div>
+
+            <!-- Customer Stats -->
+            <div class="stats-grid">
+                <div class="stat-card live">
+                    <div class="stat-icon"><i class="fas fa-box"></i></div>
+                    <div class="stat-number" id="activeOrders">5</div>
+                    <div class="stat-label">Active Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-star"></i></div>
+                    <div class="stat-number" id="customerRating">4.8</div>
+                    <div class="stat-label">Your Rating</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-number" id="totalSavings">₹2,500</div>
+                    <div class="stat-label">Total Savings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-heart"></i></div>
+                    <div class="stat-number" id="wishlistCount">12</div>
+                    <div class="stat-label">Wishlist Items</div>
+                </div>
+            </div>
+
+            <!-- Product Catalog -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-pepper-hot"></i> Premium Spice Collection</h3>
+                    <div class="chart-filters">
+                        <button class="filter-btn active" onclick="filterProducts('all')">All</button>
+                        <button class="filter-btn" onclick="filterProducts('pepper')">Pepper</button>
+                        <button class="filter-btn" onclick="filterProducts('cardamom')">Cardamom</button>
+                        <button class="filter-btn" onclick="filterProducts('turmeric')">Turmeric</button>
+                        <button class="filter-btn" onclick="filterProducts('organic')">Organic</button>
+                    </div>
+                </div>
+                
+                <div id="productGrid" class="product-grid">
+                    <!-- Products will be loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- AI Recommendations -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-robot"></i> AI Recommendations</h3>
+                    <button class="btn btn-secondary" onclick="refreshRecommendations()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+                <div id="aiRecommendations">
+                    <!-- AI recommendations will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-history"></i> Order History</h3>
+                    <button class="btn btn-secondary" onclick="viewAllOrders()">View All</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Items</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderHistory">
+                            <!-- Orders will be loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Farmer Dashboard -->
+        <div id="farmer" class="dashboard">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <i class="fas fa-seedling"></i>
+                    Farmer Portal
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="openModal('inventoryModal')">
+                        <i class="fas fa-plus"></i> Add Inventory
+                    </button>
+                    <button class="btn btn-secondary" onclick="openModal('harvestModal')">
+                        <i class="fas fa-calendar"></i> Schedule Harvest
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card live">
+                    <div class="stat-icon"><i class="fas fa-warehouse"></i></div>
+                    <div class="stat-number" id="farmerInventory">1,250</div>
+                    <div class="stat-label">Kg Available</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-rupee-sign"></i></div>
+                    <div class="stat-number" id="farmerEarnings">₹45,000</div>
+                    <div class="stat-label">This Month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="stat-number" id="ordersFulfilled">25</div>
+                    <div class="stat-label">Orders Fulfilled</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-medal"></i></div>
+                    <div class="stat-number" id="qualityRating">4.9</div>
+                    <div class="stat-label">Quality Rating</div>
+                </div>
+            </div>
+
+            <!-- Inventory Management -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-boxes"></i> My Inventory</h3>
+                    <button class="btn btn-primary" onclick="syncInventory()">
+                        <i class="fas fa-sync"></i> Sync Inventory
+                    </button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Spice</th>
+                                <th>Available (Kg)</th>
+                                <th>Price/Kg</th>
+                                <th>Quality</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="farmerInventoryTable">
+                            <!-- Inventory items will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Earnings Analytics -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-chart-area"></i> Earnings Trend</h3>
+                    <div class="chart-filters">
+                        <button class="filter-btn active" data-period="7d">7 Days</button>
+                        <button class="filter-btn" data-period="30d">30 Days</button>
+                        <button class="filter-btn" data-period="90d">90 Days</button>
+                    </div>
+                </div>
+                <canvas id="earningsChart" width="400" height="200"></canvas>
+            </div>
+
+            <!-- Advanced Harvest Calendar -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-calendar-alt"></i> Advanced Harvest Calendar</h3>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <select id="harvestMonthFilter" class="form-input" style="width: auto;" onchange="filterHarvestCalendar()">
+                            <option value="">All Months</option>
+                            <option value="0">January</option>
+                            <option value="1">February</option>
+                            <option value="2">March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="openModal('harvestPlanModal')">
+                            <i class="fas fa-plus"></i> Add Harvest Plan
+                        </button>
+                        <button class="btn btn-secondary" onclick="refreshHarvestCalendar()">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Calendar View -->
+                <div id="harvestCalendarView" class="harvest-calendar">
+                    <div class="calendar-header">
+                        <button class="btn btn-secondary" onclick="changeMonth(-1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h4 id="currentMonthYear">December 2024</h4>
+                        <button class="btn btn-secondary" onclick="changeMonth(1)">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="calendar-grid">
+                        <div class="calendar-day-header">Sun</div>
+                        <div class="calendar-day-header">Mon</div>
+                        <div class="calendar-day-header">Tue</div>
+                        <div class="calendar-day-header">Wed</div>
+                        <div class="calendar-day-header">Thu</div>
+                        <div class="calendar-day-header">Fri</div>
+                        <div class="calendar-day-header">Sat</div>
+                        <!-- Calendar days will be generated here -->
+                    </div>
+                </div>
+                
+                <!-- Upcoming Activities -->
+                <div class="upcoming-activities">
+                    <h4><i class="fas fa-clock"></i> Upcoming Activities (Next 7 Days)</h4>
+                    <div id="upcomingActivitiesList">
+                        <!-- Activities will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Weather Integration -->
+                <div class="weather-integration">
+                    <h4><i class="fas fa-cloud-sun"></i> Weather Alerts & Forecast</h4>
+                    <div id="weatherAlerts" class="weather-alerts">
+                        <!-- Weather alerts will be loaded here -->
+                    </div>
+                    <div id="weatherForecast" class="weather-forecast">
+                        <!-- Weather forecast will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="admin" class="dashboard">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <i class="fas fa-chart-line"></i>
+                    Admin Dashboard
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-secondary" onclick="exportReport()">
+                        <i class="fas fa-download"></i> Export Report
+                    </button>
+                    <button class="btn btn-primary" onclick="openModal('settingsModal')">
+                        <i class="fas fa-cog"></i> Settings
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card live pulse">
+                    <div class="stat-icon"><i class="fas fa-rupee-sign"></i></div>
+                    <div class="stat-number" id="todayRevenue">₹2,45,000</div>
+                    <div class="stat-label">Today's Revenue</div>
+                </div>
+                <div class="stat-card live">
+                    <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="stat-number" id="todayOrders">158</div>
+                    <div class="stat-label">Orders Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-number" id="activeFarmers">42</div>
+                    <div class="stat-label">Active Farmers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
+                    <div class="stat-number" id="newLeads">23</div>
+                    <div class="stat-label">New Leads</div>
+                </div>
+            </div>
+
+            <!-- Real-time Analytics -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-chart-line"></i> Sales Analytics</h3>
+                        <div class="chart-filters">
+                            <button class="filter-btn active" onclick="updateChart('revenue', '7d')">Revenue</button>
+                            <button class="filter-btn" onclick="updateChart('orders', '7d')">Orders</button>
+                            <button class="filter-btn" onclick="updateChart('users', '7d')">Users</button>
+                        </div>
+                    </div>
+                    <canvas id="salesChart" width="400" height="300"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-funnel-dollar"></i> Lead Funnel</h3>
+                    </div>
+                    <canvas id="funnelChart" width="200" height="300"></canvas>
+                </div>
+            </div>
+
+            <!-- Order Management -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-list-alt"></i> Recent Orders</h3>
+                    <div style="display: flex; gap: 1rem;">
+                        <select id="orderStatusFilter" onchange="filterOrders()" class="form-input" style="width: auto;">
+                            <option value="all">All Orders</option>
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="refreshOrders()">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminOrdersTable">
+                            <!-- Orders will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logistics Dashboard -->
+        <div id="logistics" class="dashboard">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <i class="fas fa-truck"></i>
+                    Logistics Control Center
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="optimizeRoutes()">
+                        <i class="fas fa-route"></i> Optimize Routes
+                    </button>
+                    <button class="btn btn-secondary" onclick="openModal('driverModal')">
+                        <i class="fas fa-user-plus"></i> Add Driver
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card live">
+                    <div class="stat-icon"><i class="fas fa-boxes"></i></div>
+                    <div class="stat-number" id="pendingPickups">47</div>
+                    <div class="stat-label">Pending Pickups</div>
+                </div>
+                <div class="stat-card live">
+                    <div class="stat-icon"><i class="fas fa-shipping-fast"></i></div>
+                    <div class="stat-number" id="inTransit">132</div>
+                    <div class="stat-label">In Transit</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-number" id="deliveredToday">89</div>
+                    <div class="stat-label">Delivered Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-number" id="onTimeDelivery">96.5%</div>
+                    <div class="stat-label">On-Time Rate</div>
+                </div>
+            </div>
+
+            <!-- Live Tracking Map -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-map-marked-alt"></i> Live Delivery Tracking</h3>
+                    <button class="btn btn-secondary" onclick="refreshMap()">
+                        <i class="fas fa-sync"></i> Refresh Map
+                    </button>
+                </div>
+                <div id="deliveryMap" style="height: 400px; background: linear-gradient(135deg, #e8f5e8 0%, #d1ecf1 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #666; position: relative;">
+                    🗺️ Live Delivery Map
+                    <div style="position: absolute; top: 20px; right: 20px; background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        <h4>Active Vehicles: 12</h4>
+                        <div>🚚 Truck 1 - Route A</div>
+                        <div>🛵 Bike 3 - Route C</div>
+                        <div>🚚 Truck 7 - Route B</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Route Management -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-route"></i> Active Routes</h3>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Route</th>
+                                <th>Driver</th>
+                                <th>Vehicle</th>
+                                <th>Orders</th>
+                                <th>Status</th>
+                                <th>ETA</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="routesTable">
+                            <!-- Routes will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Modals -->
+    
+    <!-- Lead Capture Modal -->
+    <div id="leadModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('leadModal')">&times;</button>
+            <h2 style="color: var(--earth-green); margin-bottom: 1.5rem;">
+                <i class="fas fa-leaf"></i> Get Premium Spice Quote
+            </h2>
+            <form id="leadForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" class="form-input" name="name" placeholder="Enter your name" required>
+                    <div class="form-error"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number *</label>
+                    <input type="tel" class="form-input" name="phone" placeholder="+91 98765 43210" required>
+                    <div class="form-error"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" name="email" placeholder="your@email.com">
+                    <div class="form-error"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Interested Spices *</label>
+                    <select class="form-input" name="interestedSpices" multiple required>
+                        <option value="Black Pepper">Black Pepper</option>
+                        <option value="Cardamom">Cardamom</option>
+                        <option value="Turmeric">Turmeric</option>
+                        <option value="Coriander">Coriander</option>
+                        <option value="Red Chili">Red Chili</option>
+                        <option value="Cloves">Cloves</option>
+                        <option value="Cinnamon">Cinnamon</option>
+                    </select>
+                    <div class="form-error"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Monthly Quantity Needed</label>
+                    <select class="form-input" name="monthlyQuantity">
+                        <option value="1-5 Kg">1-5 Kg</option>
+                        <option value="6-15 Kg">6-15 Kg</option>
+                        <option value="16-50 Kg">16-50 Kg</option>
+                        <option value="50+ Kg">50+ Kg (Bulk Orders)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                    <i class="fas fa-paper-plane"></i> Get Instant Quote
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Enhanced Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <button class="modal-close" onclick="closeModal('cartModal')">&times;</button>
+            <h2 style="color: var(--earth-green); margin-bottom: 1.5rem;">
+                <i class="fas fa-shopping-cart"></i> Your Shopping Cart
+            </h2>
+            <div id="cartItems" style="max-height: 400px; overflow-y: auto;">
+                <!-- Cart items will be populated here -->
+            </div>
+            
+            <div style="border-top: 2px solid #eee; padding-top: 1rem; margin-top: 1rem;">
+                <div id="cartSummary">
+                    <!-- Cart summary will be populated here -->
+                </div>
+                
+                <div class="payment-methods" style="margin: 1rem 0;">
+                    <div class="payment-method selected" data-method="razorpay">
+                        <i class="fas fa-credit-card"></i>
+                        <div>Card/UPI/NetBanking</div>
+                    </div>
+                    <div class="payment-method" data-method="cod">
+                        <i class="fas fa-money-bill"></i>
+                        <div>Cash on Delivery</div>
+                    </div>
+                </div>
+                
+                <button id="checkoutBtn" class="btn btn-primary" style="width: 100%;" onclick="proceedToCheckout()">
+                    <i class="fas fa-lock"></i> Secure Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Tracking Modal -->
+    <div id="trackingModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="modal-close" onclick="closeModal('trackingModal')">&times;</button>
+            <h2 style="color: var(--earth-green); margin-bottom: 1.5rem;">
+                <i class="fas fa-truck"></i> Track Your Order
+            </h2>
+            
+            <div class="form-group">
+                <label class="form-label">Order Number</label>
+                <input type="text" id="trackingOrderId" class="form-input" placeholder="Enter your order number (e.g., F10001)">
+                <button class="btn btn-primary" onclick="trackOrder()" style="margin-top: 0.5rem; width: 100%;">
+                    <i class="fas fa-search"></i> Track Order
+                </button>
+            </div>
+            
+            <div id="trackingResults" style="display: none;">
+                <div class="tracking-timeline">
+                    <!-- Tracking timeline will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory Management Modal -->
+    <div id="inventoryModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('inventoryModal')">&times;</button>
+            <h2 style="color: var(--earth-green); margin-bottom: 1.5rem;">
+                <i class="fas fa-plus"></i> Add New Inventory
+            </h2>
+            <form id="inventoryForm">
+                <div class="form-group">
+                    <label class="form-label">Spice Type *</label>
+                    <select class="form-input" name="spice" required>
+                        <option value="">Select Spice</option>
+                        <option value="black-pepper">Black Pepper</option>
+                        <option value="cardamom">Cardamom</option>
+                        <option value="turmeric">Turmeric</option>
+                        <option value="coriander">Coriander</option>
+                        <option value="red-chili">Red Chili</option>
+                        <option value="cloves">Cloves</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Quantity (Kg) *</label>
+                    <input type="number" class="form-input" name="quantity" placeholder="Enter quantity in kg" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Expected Price per Kg *</label>
+                    <input type="number" class="form-input" name="pricePerKg" placeholder="Enter price" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Quality Grade *</label>
+                    <select class="form-input" name="qualityGrade" required>
+                        <option value="">Select Grade</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Grade A">Grade A</option>
+                        <option value="Grade B">Grade B</option>
+                        <option value="Standard">Standard</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Harvest Date *</label>
+                    <input type="date" class="form-input" name="harvestDate" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Certifications</label>
+                    <select class="form-input" name="certifications" multiple>
+                        <option value="Organic">Organic Certified</option>
+                        <option value="Fair Trade">Fair Trade</option>
+                        <option value="FSSAI">FSSAI Approved</option>
+                        <option value="Export Quality">Export Quality</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Additional Notes</label>
+                    <textarea class="form-input" name="notes" rows="3" placeholder="Any special notes about the harvest..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                    <i class="fas fa-upload"></i> Submit for Approval
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global Configuration
+        const CONFIG = {
+            API_BASE_URL: 'http://localhost:5000/api',
+            RAZORPAY_KEY_ID: 'rzp_test_your_key_id',
+            SOCKET_URL: 'http://localhost:5000'
+        };
+
+        // Global State Management
+        let currentUser = null;
+        let cart = JSON.parse(localStorage.getItem('farmers10_cart') || '[]');
+        let socket = null;
+        let deferredPrompt = null;
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            setupPWA();
+            
+            // Check if user is logged in
+            const token = localStorage.getItem('farmers10_token');
+            if (token) {
+                validateAndSetUser(token);
+            } else {
+                updateAuthControls(null);
+            }
+            
+            // Load initial data
+            loadProducts();
+            updateCartBadge();
+        });
+
+        // App Initialization
+        function initializeApp() {
+            console.log('🌿 Farmers 10 Platform Initialized');
+            
+            // Setup Socket.IO connection
+            if (currentUser) {
+                setupSocketConnection();
+            }
+            
+            // Setup periodic data refresh
+            setInterval(refreshLiveData, 30000); // Every 30 seconds
+            
+            // Setup service worker for PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => console.log('SW registered'))
+                    .catch(error => console.log('SW registration failed'));
+            }
+            
+            // Initialize harvest calendar for farmers
+            if (currentUser && currentUser.role === 'farmer') {
+                loadHarvestCalendar();
+            }
+        }
+
+        // Socket.IO Setup
+        function setupSocketConnection() {
+            socket = io(CONFIG.SOCKET_URL, {
+                auth: {
+                    token: localStorage.getItem('farmers10_token')
+                }
+            });
+            
+            socket.on('connect', () => {
+                console.log('Socket connected');
+                socket.emit('join-room', currentUser.id);
+            });
+            
+            socket.on('notification', (data) => {
+                showNotification(data.message, data.type);
+            });
+            
+            socket.on('order-status-update', (data) => {
+                showNotification(`Order ${data.orderNumber}: ${data.message}`, 'info');
+                refreshOrderHistory();
+            });
+            
+            socket.on('inventory-update', (data) => {
+                if (currentUser.role === 'farmer') {
+                    refreshFarmerInventory();
+                }
+            });
+            
+            socket.on('weather-alert', (data) => {
+                if (currentUser.role === 'farmer') {
+                    showNotification(`🌡️ Weather Alert: ${data.message}`, 'warning');
+                    loadWeatherAlerts();
+                }
+            });
+            
+            socket.on('news-update', (data) => {
+                showNotification('📰 New market news available', 'info');
+                loadNewsBoard();
+            });
+            
+            socket.on('price-update', (data) => {
+                loadMarketPrices();
+            });
+        }
+
+        // Authentication Functions
+        async function validateAndSetUser(token) {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/auth/validate`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const userData = await response.json();
+                    currentUser = userData.user;
+                    updateAuthControls(currentUser);
+                    setupSocketConnection();
+                    showDashboard(currentUser.role);
+                    
+                    // Load role-specific data
+                    if (currentUser.role === 'farmer') {
+                        loadHarvestCalendar();
+                    }
+                } else {
+                    localStorage.removeItem('farmers10_token');
+                    updateAuthControls(null);
+                }
+            } catch (error) {
+                console.error('Token validation failed:', error);
+                localStorage.removeItem('farmers10_token');
+                updateAuthControls(null);
+            }
+        }
+
+        function updateAuthControls(user) {
+            const authControls = document.getElementById('authControls');
+            
+            if (user) {
+                authControls.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="color: white;">Welcome, ${user.name}</span>
+                        <div class="cart-badge" data-count="${cart.length}">
+                            <button class="btn btn-secondary" onclick="openModal('cartModal')">
+                                <i class="fas fa-shopping-bag"></i> Cart
+                            </button>
+                        </div>
+                        <button class="btn btn-primary" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                `;
+                document.getElementById('welcomeSection').style.display = 'none';
+            } else {
+                authControls.innerHTML = `
+                    <button class="btn btn-secondary" onclick="openModal('loginModal')">
+                        <i class="fas fa-user"></i> Login
+                    </button>
+                    <button class="btn btn-primary" onclick="openModal('leadModal')">
+                        <i class="fas fa-leaf"></i> Get Quote
+                    </button>
+                `;
+                document.getElementById('welcomeSection').style.display = 'block';
+            }
+        }
+
+        async function login(email, password, role) {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('farmers10_token', data.token);
+                    currentUser = data.user;
+                    updateAuthControls(currentUser);
+                    setupSocketConnection();
+                    showDashboard(currentUser.role);
+                    closeModal('loginModal');
+                    showNotification('Login successful!', 'success');
+                    
+                    // Load role-specific data
+                    if (currentUser.role === 'farmer') {
+                        loadHarvestCalendar();
+                    }
+                } else {
+                    showNotification(data.error || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showNotification('Network error. Please try again.', 'error');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('farmers10_token');
+            localStorage.removeItem('farmers10_cart');
+            if (socket) {
+                socket.disconnect();
+            }
+            currentUser = null;
+            cart = [];
+            harvestCalendarData = [];
+            updateAuthControls(null);
+            updateCartBadge();
+            showDashboard('customer');
+            showNotification('Logged out successfully', 'info');
+        }
+
+        // Enhanced Form Handlers
+        function setupEventListeners() {
+            // Lead form submission
+            document.getElementById('leadForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const leadData = Object.fromEntries(formData.entries());
+                
+                try {
+                    const response = await fetch(`${CONFIG.API_BASE_URL}/leads`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(leadData)
+                    });
+                    
+                    if (response.ok) {
+                        showNotification('Thank you! We will contact you within 24 hours.', 'success');
+                        closeModal('leadModal');
+                        this.reset();
+                    } else {
+                        showNotification('Failed to submit. Please try again.', 'error');
+                    }
+                } catch (error) {
+                    showNotification('Network error. Please try again.', 'error');
+                }
+            });
+            
+            // Harvest Plan form submission
+            const harvestPlanForm = document.getElementById('harvestPlanForm');
+            if (harvestPlanForm) {
+                harvestPlanForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    const planData = Object.fromEntries(formData.entries());
+                    
+                    // Collect crop stages
+                    const cropStages = [];
+                    const stageTypes = formData.getAll('stageType');
+                    const stageDates = formData.getAll('stageDate');
+                    const stageNotes = formData.getAll('stageNotes');
+                    
+                    for (let i = 0; i < stageTypes.length; i++) {
+                        if (stageTypes[i] && stageDates[i]) {
+                            cropStages.push({
+                                stage: stageTypes[i],
+                                plannedDate: stageDates[i],
+                                notes: stageNotes[i] || '',
+                                completed: false
+                            });
+                        }
+                    }
+                    
+                    planData.cropStages = cropStages;
+                    planData.location = {
+                        district: planData.district,
+                        village: planData.village
+                    };
+                    
+                    try {
+                        const response = await fetch(`${CONFIG.API_BASE_URL}/harvest-calendar`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${localStorage.getItem('farmers10_token')}`
+                            },
+                            body: JSON.stringify(planData)
+                        });
+                        
+                        if (response.ok) {
+                            showNotification('Harvest plan created successfully!', 'success');
+                            closeModal('harvestPlanModal');
+                            this.reset();
+                            loadHarvestCalendar();
+                        } else {
+                            showNotification('Failed to create harvest plan.', 'error');
+                        }
+                    } catch (error) {
+                        showNotification('Network error. Please try again.', 'error');
+                    }
+                });
+            }
+            
+            // Inventory form submission
+            document.getElementById('inventoryForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const inventoryData = Object.fromEntries(formData.entries());
+                
+                try {
+                    const response = await fetch(`${CONFIG.API_BASE_URL}/inventory`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('farmers10_token')}`
+                        },
+                        body: JSON.stringify(inventoryData)
+                    });
+                    
+                    if (response.ok) {
+                        showNotification('Inventory submitted for approval!', 'success');
+                        closeModal('inventoryModal');
+                        this.reset();
+                        refreshFarmerInventory();
+                    } else {
+                        showNotification('Failed to submit inventory.', 'error');
+                    }
+                } catch (error) {
+                    showNotification('Network error. Please try again.', 'error');
+                }
+            });
+            
+            // Payment method selection
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.payment-method')) {
+                    document.querySelectorAll('.payment-method').forEach(method => {
+                        method.classList.remove('selected');
+                    });
+                    e.target.closest('.payment-method').classList.add('selected');
+                }
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.classList.remove('active');
+                }
+            });
+        }
+
+        // Enhanced Dashboard Functions
+        function showDashboard(role) {
+            // Hide all dashboards
+            document.querySelectorAll('.dashboard').forEach(dashboard => {
+                dashboard.classList.remove('active');
+            });
+            
+            // Remove active from all role buttons
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected dashboard
+            document.getElementById(role).classList.add('active');
+            
+            // Add active to clicked button if exists
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // Load dashboard-specific data
+            loadDashboardData(role);
+        }
+
+        function loadDashboardData(role) {
+            switch (role) {
+                case 'customer':
+                    loadCustomerData();
+                    break;
+                case 'farmer':
+                    loadFarmerData();
+                    loadHarvestCalendar();
+                    break;
+                case 'admin':
+                    loadAdminData();
+                    break;
+                case 'logistics':
+                    loadLogisticsData();
+                    break;
+            }
+        }
+
+        function loadCustomerData() {
+            // Load order history
+            refreshOrderHistory();
+            
+            // Load AI recommendations
+            loadAIRecommendations();
+        }
+
+        function loadFarmerData() {
+            refreshFarmerInventory();
+            loadEarningsChart();
+            loadHarvestCalendar();
+        }
+
+        function loadAdminData() {
+            refreshAdminStats();
+            loadSalesChart();
+            loadFunnelChart();
+            refreshAdminOrders();
+        }
+
+        function loadLogisticsData() {
+            refreshLogisticsStats();
+            loadRoutesData();
+        }
+
+        // Status Badge Helper
+        function getStatusBadgeClass(status) {
+            const classes = {
+                pending: 'status-badge pending',
+                processing: 'status-badge processing', 
+                shipped: 'status-badge shipped',
+                delivered: 'status-badge delivered',
+                cancelled: 'status-badge cancelled'
+            };
+            return classes[status] || 'status-badge';
+        }
+
+        // Add status badge styles dynamically
+        const statusBadgeStyles = `
+            .status-badge {
+                padding: 0.25rem 0.75rem;
+                border-radius: 12px;
+                font-size: 0.8rem;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            .status-badge.pending { background: #fff3cd; color: #856404; }
+            .status-badge.processing { background: #d4edda; color: #155724; }
+            .status-badge.shipped { background: #cce5ff; color: #004085; }
+            .status-badge.delivered { background: #d1ecf1; color: #0c5460; }
+            .status-badge.cancelled { background: #f5c6cb; color: #721c24; }
+        `;
+        
+        if (!document.getElementById('statusBadgeStyles')) {
+            const styleSheet = document.createElement('style');
+            styleSheet.id = 'statusBadgeStyles';
+            styleSheet.textContent = statusBadgeStyles;
+            document.head.appendChild(styleSheet);
+        }
+
+        // Continue with existing functions...
+        // [Rest of the JavaScript functions remain the same]
+
+        // Socket.IO Setup
+        function setupSocketConnection() {
+            socket = io(CONFIG.SOCKET_URL, {
+                auth: {
+                    token: localStorage.getItem('farmers10_token')
+                }
+            });
+            
+            socket.on('connect', () => {
+                console.log('Socket connected');
+                socket.emit('join-room', currentUser.id);
+            });
+            
+            socket.on('notification', (data) => {
+                showNotification(data.message, data.type);
+            });
+            
+            socket.on('order-status-update', (data) => {
+                showNotification(`Order ${data.orderNumber}: ${data.message}`, 'info');
+                refreshOrderHistory();
+            });
+            
+            socket.on('inventory-update', (data) => {
+                if (currentUser.role === 'farmer') {
+                    refreshFarmerInventory();
+                }
+            });
+        }
+
+        // Authentication Functions
+        async function validateAndSetUser(token) {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/auth/validate`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const userData = await response.json();
+                    currentUser = userData.user;
+                    updateAuthControls(currentUser);
+                    setupSocketConnection();
+                    showDashboard(currentUser.role);
+                } else {
+                    localStorage.removeItem('farmers10_token');
+                    updateAuthControls(null);
+                }
+            } catch (error) {
+                console.error('Token validation failed:', error);
+                localStorage.removeItem('farmers10_token');
+                updateAuthControls(null);
+            }
+        }
+
+        function updateAuthControls(user) {
+            const authControls = document.getElementById('authControls');
+            
+            if (user) {
+                authControls.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="color: white;">Welcome, ${user.name}</span>
+                        <div class="cart-badge" data-count="${cart.length}">
+                            <button class="btn btn-secondary" onclick="openModal('cartModal')">
+                                <i class="fas fa-shopping-bag"></i> Cart
+                            </button>
+                        </div>
+                        <button class="btn btn-primary" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                `;
+                document.getElementById('welcomeSection').style.display = 'none';
+            } else {
+                authControls.innerHTML = `
+                    <button class="btn btn-secondary" onclick="openModal('loginModal')">
+                        <i class="fas fa-user"></i> Login
+                    </button>
+                    <button class="btn btn-primary" onclick="openModal('leadModal')">
+                        <i class="fas fa-leaf"></i> Get Quote
+                    </button>
+                `;
+                document.getElementById('welcomeSection').style.display = 'block';
+            }
+        }
+
+        async function login(email, password, role) {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('farmers10_token', data.token);
+                    currentUser = data.user;
+                    updateAuthControls(currentUser);
+                    setupSocketConnection();
+                    showDashboard(currentUser.role);
+                    closeModal('loginModal');
+                    showNotification('Login successful!', 'success');
+                } else {
+                    showNotification(data.error || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showNotification('Network error. Please try
